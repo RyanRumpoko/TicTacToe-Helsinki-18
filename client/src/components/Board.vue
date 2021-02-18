@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1 v-if="winner.username">{{winner.username}}</h1>
+    <h1 v-if="winner.img">Tie</h1>
     <h1>Room ID: {{roomID}}</h1>
     <h3 v-if="!isStart&&countDown==0">Waiting for players...</h3>
     <div class="playersList">
@@ -42,31 +43,30 @@ import Player from './Player'
 
 export default {
   name: 'board',
-  data () {
-    return {
-      roomID: '',
-      players: [],
-      cells: [],
-      currentTurn: '',
-      isStart: false,
-      winner: null,
-      size: null,
-      countDown: 0
-    }
-  },
-  sockets: {
-    waiting (time) {
-      this.countDown = time
+  computed: {
+    countDown () {
+      return this.$store.state.countDown
     },
-    update (data) {
-      console.log(data)
-      this.roomID = data.roomID
-      this.cells = data.cells
-      this.currentTurn = data.currentTurn
-      this.winner = data.winner
-      this.players = data.players
-      this.isStart = data.isStart
-      this.size = data.size
+    roomID () {
+      return this.$store.state.roomID
+    },
+    cells () {
+      return this.$store.state.cells
+    },
+    currentTurn () {
+      return this.$store.state.currentTurn
+    },
+    winner () {
+      return this.$store.state.winner
+    },
+    players () {
+      return this.$store.state.players
+    },
+    isStart () {
+      return this.$store.state.isStart
+    },
+    size () {
+      return this.$store.state.size
     }
   },
   methods: {
@@ -101,22 +101,12 @@ export default {
   transform: scale(0);
   transform: rotate(90deg);
 }
-.msgInput-enter-active,
-.msgInput-leave-active {
-  transition: all 0.3s ease-in-out;
-}
-.msgInput-enter,
-.msgInput-leave-to {
-  opacity: 0;
-  transform: translateX(-50px);
-}
 
 .countDown-enter-active {
   transition: all 0.35s ease-in-out;
 }
 .countDown-enter {
   opacity: 0;
-  transform: rotate3d(0, 1, 0, -180deg);
 }
 .bbtn {
   width: 40%;
