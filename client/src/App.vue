@@ -4,7 +4,6 @@
       <form class="form" v-if="nameScene" v-on:submit.prevent="joinRoom">
         <h1>TicTacToe Helsinki 18</h1>
         <input v-model="username" type="text" placeholder="YourName" />
-        <input v-model="roomId" type="text" placeholder="room id" />
         <button class="btn" type="submit">Play</button>
       </form>
 
@@ -20,35 +19,16 @@ export default {
   data () {
     return {
       nameScene: true,
-      totalPlayers: 0,
-      username: '',
-      roomId: ''
+      username: ''
     }
   },
-  sockets: {
-    connect () {
-      console.log('-------connected')
-      console.log(this.totalPlayers, '<<< di app.vue')
-      // this.$socket.emit('userJoin', this.name)
-    },
-    totalPlayers (data) {
-      this.totalPlayers = data
+  computed: {
+    totalPlayers () {
+      return this.$store.state.totalPlayers
     }
   },
   methods: {
     joinRoom () {
-      // if (this.roomId) {
-      //   this.$socket.emit('joinRoom', {
-      //     username: this.username,
-      //     img: 'https://i.pravatar.cc/?u=' + this.username,
-      //     roomID: this.roomId
-      //   })
-      // } else {
-      //   this.$socket.emit('joinGame', {
-      //     username: this.username || 'Hacktiv8',
-      //     img: 'https://i.pravatar.cc/?u=' + this.username
-      //   })
-      // }
       this.$socket.emit('joinGame', {
         username: this.username || 'Hacktiv8',
         img: 'https://i.pravatar.cc/?u=' + this.username
