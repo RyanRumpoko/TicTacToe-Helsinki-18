@@ -1,12 +1,59 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  <div>
+    <transition mode="out-in" name="fade" appear>
+      <form class="form" v-if="nameScene" v-on:submit.prevent="joinRoom">
+        <h1>TicTacToe Helsinki 18</h1>
+        <input v-model="username" type="text" placeholder="YourName" />
+        <input v-model="roomId" type="text" placeholder="room id" />
+        <button class="btn" type="submit">Play</button>
+      </form>
+
+      <!-- <board @back="onBack" v-else :socket="socket" /> -->
+    </transition>
   </div>
 </template>
+
+<script>
+export default {
+  data () {
+    return {
+      nameScene: true,
+      totalPlayers: 0,
+      username: '',
+      roomId: ''
+    }
+  },
+  sockets: {
+    connect () {
+      console.log('-------connected')
+      console.log(this.totalPlayers, '<<< di app.vue')
+      // this.$socket.emit('userJoin', this.name)
+    }
+  },
+  methods: {
+    joinRoom () {
+      if (this.roomId) {
+        this.$socket.emit('joinRoom', {
+          username: this.username,
+          img: 'https://i.pravatar.cc/?u=' + this.username,
+          roomID: this.roomId
+        })
+      } else {
+        this.$socket.emit('joinGame', {
+          username: this.username || 'Hacktiv8',
+          img: 'https://i.pravatar.cc/?u=' + this.username
+        })
+      }
+      this.nameScene = false
+    }
+  },
+  created () {
+    this.$socket.on('totalPlayers', data => {
+      this.totalPlayers = data
+    })
+  }
+}
+</script>
 
 <style>
 #app {
@@ -28,5 +75,27 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  color: #f7fff7;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  text-align: center;
+}
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  float: left;
+  width: 100%;
+  background: #5c341a;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
