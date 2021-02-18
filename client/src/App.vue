@@ -8,12 +8,14 @@
         <button class="btn" type="submit">Play</button>
       </form>
 
-      <!-- <board @back="onBack" v-else :socket="socket" /> -->
+      <board @back="onBack" v-else />
     </transition>
   </div>
 </template>
 
 <script>
+import Board from './components/Board'
+
 export default {
   data () {
     return {
@@ -28,6 +30,9 @@ export default {
       console.log('-------connected')
       console.log(this.totalPlayers, '<<< di app.vue')
       // this.$socket.emit('userJoin', this.name)
+    },
+    totalPlayers (data) {
+      this.totalPlayers = data
     }
   },
   methods: {
@@ -45,12 +50,14 @@ export default {
         })
       }
       this.nameScene = false
+    },
+    onBack () {
+      this.$socket.emit('leaveGame')
+      this.nameScene = true
     }
   },
-  created () {
-    this.$socket.on('totalPlayers', data => {
-      this.totalPlayers = data
-    })
+  components: {
+    Board
   }
 }
 </script>
