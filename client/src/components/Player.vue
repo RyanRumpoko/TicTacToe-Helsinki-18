@@ -1,5 +1,5 @@
 <template>
-  <div class="container" @mouseover="mouseOver" @mouseleave="mouseLeave">
+  <div class="container">
     <img
       @load="imgLoaded=true"
       v-show="imgLoaded"

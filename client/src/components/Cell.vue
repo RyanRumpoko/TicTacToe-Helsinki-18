@@ -1,7 +1,8 @@
 <template>
-  <div class="cell" v-on:click="check" style="width: 33%; height: 33%;">
+  <div class="cell" v-on:click="check" :style="{  width: sizeCalc,
+  height: sizeCalc}">
     <transition name="playerImg">
-      <img v-if="img!=''" :src="img" style="width: 80%; height: 80%; opacity: 1;" />
+      <img v-if="img!=''" :src="img" :style="{width:imgSize, height:imgSize,opacity:imgOpacity}" />
     </transition>
   </div>
 </template>
@@ -10,11 +11,22 @@
 export default {
   name: 'Cell',
   props: ['img', 'canClick', 'size', 'id'],
+  data () {
+    return {
+      imgSize: 80 + '%',
+      imgOpacity: 1
+    }
+  },
   methods: {
     check () {
       if (this.canClick) {
         this.$emit('change')
       }
+    }
+  },
+  computed: {
+    sizeCalc () {
+      return 100 / this.size + '%'
     }
   }
 }

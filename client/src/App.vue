@@ -37,18 +37,22 @@ export default {
   },
   methods: {
     joinRoom () {
-      if (this.roomId) {
-        this.$socket.emit('joinRoom', {
-          username: this.username,
-          img: 'https://i.pravatar.cc/?u=' + this.username,
-          roomID: this.roomId
-        })
-      } else {
-        this.$socket.emit('joinGame', {
-          username: this.username || 'Hacktiv8',
-          img: 'https://i.pravatar.cc/?u=' + this.username
-        })
-      }
+      // if (this.roomId) {
+      //   this.$socket.emit('joinRoom', {
+      //     username: this.username,
+      //     img: 'https://i.pravatar.cc/?u=' + this.username,
+      //     roomID: this.roomId
+      //   })
+      // } else {
+      //   this.$socket.emit('joinGame', {
+      //     username: this.username || 'Hacktiv8',
+      //     img: 'https://i.pravatar.cc/?u=' + this.username
+      //   })
+      // }
+      this.$socket.emit('joinGame', {
+        username: this.username || 'Hacktiv8',
+        img: 'https://i.pravatar.cc/?u=' + this.username
+      })
       this.nameScene = false
     },
     onBack () {
