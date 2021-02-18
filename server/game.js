@@ -34,10 +34,10 @@ class Game {
   preStart() {
     if (this.interval) return;
     this.canJoin = false;
-    const time = 5;
+    let time = 5;
     this.interval = setInterval(() => {
       Object.keys(this.sockets).forEach(playerID => {
-        const socket = this.sockets[playerID];
+        let socket = this.sockets[playerID];
         socket.emit("waiting", time);
       });
       time--;
@@ -72,6 +72,18 @@ class Game {
       img: ""
     };
     if (Object.keys(this.players).length == this.maxPlayers) this.preStart();
+  }
+
+  move(socketID, cellID) {
+    if (!this.canPlay) return;
+    if (socketID != this.currentTurn) return;
+
+    this.board.move(this.players[socketID], cellID);
+    if (this.board.win(socketID)) {
+      this.canPlay = false;
+      this.winner = this.players[socketID];
+    }
+    this.nextPlayer(socketID);
   }
 
   nextPlayer(socketID) {

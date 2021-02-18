@@ -25,7 +25,7 @@ io.on('connection', function(socket) {
   io.emit('totalPlayers', playersCount);
   console.log(playersCount, '<<< di app.js');
   socket.on('joinGame', joinGame);
-  socket.on('joinRoom', joinRoom);
+  // socket.on('joinRoom', joinRoom);
   socket.on('leaveGame', leaveGame);
   socket.on('move', handleMove);
   socket.on('disconnect', leaveGame);
@@ -39,25 +39,45 @@ function joinGame({
   username,
   img
 }) {
-  let roomID = uuidv1().substring(0, 7);
-  games[roomID] = new Game(roomID);
-  console.log(games[roomID], '<<< ini apps line 44')
-  this.roomName = roomID;
-  games[roomID].addPlayer(this, username, img);
-}
-
-function joinRoom ({
-  username,
-  img,
-  roomID
-}) {
-  let game = games[roomID];
-  console.log(game);
-  if (game.canJoin) {
-    this.roomName = game.name;
-    game.addPlayer(this, username, img);
+  for (index in games) {
+    var game = games[index];
+    if (game.canJoin) {
+      this.roomName = game.name;
+      game.addPlayer(this, username, img);
+    }
+  }
+  if (!this.roomName) {
+    var roomID = uuidv1().substring(0, 7);
+    games[roomID] = new Game(roomID);
+    this.roomName = roomID;
+    games[roomID].addPlayer(this, username, img);
   }
 }
+
+// function joinGame({
+//   username,
+//   img
+// }) {
+//   let roomID = uuidv1().substring(0, 7);
+//   games[roomID] = new Game(roomID);
+//   console.log(games[roomID], '<<< ini apps line 44')
+//   this.roomName = roomID;
+//   games[roomID].addPlayer(this, username, img);
+// }
+
+// function joinRoom ({
+//   username,
+//   img,
+//   roomID
+// }) {
+//   let game = games[roomID];
+//   console.log(game);
+//   if (game.canJoin) {
+//     this.roomName = game.name;
+//     console.log(game, '<<<<<< dalam if game join room');
+//     game.addPlayer(this, username, img);
+//   }
+// }
 
 function leaveGame() {
   if (this.roomName) {
