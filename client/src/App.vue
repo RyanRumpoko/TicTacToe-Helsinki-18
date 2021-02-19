@@ -1,11 +1,11 @@
 <template>
-  <div class="container-fluid position-center">
-    <div class="row justify-content-center">
-      <form v-if="nameScene" @submit.prevent="joinRoom">
-        <h1 class="text-danger">TicTacToe Helsinki 18</h1>
+  <div class="container-fluid bg-dark">
+    <div class="row justify-content-center align-items-center">
+      <form v-if="nameScene" @submit.prevent="joinRoom" class="position-center">
+        <h1 class="text-danger fs-5" style="font-size: 35px">TicTacToe Helsinki 18</h1>
         <input v-model="username" type="text" class="form-control" placeholder="Nama Kamu" />
         <div class="row justify-content-center">
-          <button class="col-6 btn btn-danger mt-1" type="submit">Play</button>
+          <button class="col-6 btn btn-danger mt-1" type="submit">Mainkan</button>
         </div>
       </form>
 
@@ -49,12 +49,24 @@ export default {
 </script>
 
 <style>
-body {
+html {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
+  text-align: center;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  width: 100%;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  float: left;
 }
 
 .position-center {
