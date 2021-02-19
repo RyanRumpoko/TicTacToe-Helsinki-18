@@ -3,7 +3,7 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server, {
   cors: {
-    origin: 'http://localhost:8080',
+    origin: 'https://group-project-18-tic-tac-toe.web.app',
     methods: ['GET', 'POST'],
     credentials: true
   },
