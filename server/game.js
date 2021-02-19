@@ -1,6 +1,5 @@
 const Player = require("./player");
 const Board = require("./board");
-var uuidv1 = require("uuid/v1");
 
 class Game {
   constructor(name) {
@@ -61,17 +60,6 @@ class Game {
     this.isStart = true;
     this.canPlay = true;
     this.board = new Board(this.maxPlayers + 1);
-  }
-
-  reset() {
-    this.board = new Board(this.maxPlayers + 1);
-    this.isStart = false;
-    this.canPlay = false;
-    this.canJoin = true;
-    this.winner = {
-      img: ""
-    };
-    if (Object.keys(this.players).length == this.maxPlayers) this.preStart();
   }
 
   move(socketID, cellID) {
