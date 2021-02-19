@@ -1,7 +1,19 @@
 <template>
   <div>
-    <h1 v-if="winner.username" class="text-danger">Pemenangnya adalah: {{winner.username}}</h1>
-    <h1 v-if="winner.img && !winner.username" class="text-danger">Sayang sekali kalian seri</h1>
+    <b-modal
+      centered
+      :visible="showModalWin"
+      ref="modal"
+    >
+      <h1 class="text-danger">Pemenangnya adalah: {{winner.username}}</h1>
+    </b-modal>
+    <b-modal
+      centered
+      :visible="showModalTie"
+      ref="modal"
+    >
+      <h1 class="text-danger">Sayang sekali kalian seri</h1>
+    </b-modal>
     <h1 class="text-center" style="color: #fc8621">Room ID: {{roomID}}</h1>
     <h3 v-if="!isStart&&countDown==0" class="text-center text-danger">Waiting for players...</h3>
     <div class="playersList">
@@ -48,6 +60,20 @@ import Player from './Player'
 export default {
   name: 'board',
   computed: {
+    showModalWin () {
+      if (this.winner.username) {
+        return true
+      } else {
+        return false
+      }
+    },
+    showModalTie () {
+      if (!this.winner.username && this.winner.img) {
+        return true
+      } else {
+        return false
+      }
+    },
     countDown () {
       return this.$store.state.countDown
     },
