@@ -1,14 +1,13 @@
 <template>
-  <div class="container">
+  <div class="container text-center">
     <img
       @load="imgLoaded=true"
       v-show="imgLoaded"
       :src="player.img"
-      v-bind:style="{ 'border-color':getcolor}"
     />
     <img v-if="!imgLoaded" src="loading.svg" style="border-color:red" />
 
-    <p>{{player.username}}</p>
+    <p class="my-3 text-danger">{{player.username}}</p>
 
   </div>
 </template>

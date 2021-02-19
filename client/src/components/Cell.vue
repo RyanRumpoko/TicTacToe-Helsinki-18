@@ -1,8 +1,7 @@
 <template>
-  <div class="cell" @click="check" :style="{  width: sizeCalc,
-  height: sizeCalc}">
+  <div class="cell" @click="check" :style="{ width: sizeCalc, height: sizeCalc }">
     <transition name="playerImg">
-      <img v-if="img!=''" :src="img" :style="{width:imgSize, height:imgSize,opacity:imgOpacity}" />
+      <img v-if="img!=''" :src="img" :style="{ width:imgSize, height:imgSize,opacity:imgOpacity }" />
     </transition>
   </div>
 </template>

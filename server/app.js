@@ -35,18 +35,18 @@ io.on('connection', (socket) => {
 })
 
 function joinGame({ username, img }) {
-  if (!this.roomName) {
-    let roomID = uuid().substring(0, 7);
-    games[roomID] = new Game(roomID);
-    this.roomName = roomID;
-    games[roomID].addPlayer(this, username, img);
-  }
   for (index in games) {
     let game = games[index];
     if (game.canJoin) {
       this.roomName = game.name;
       game.addPlayer(this, username, img);
     }
+  }
+  if (!this.roomName) {
+    let roomID = uuid().substring(0, 7);
+    games[roomID] = new Game(roomID);
+    this.roomName = roomID;
+    games[roomID].addPlayer(this, username, img);
   }
 }
 

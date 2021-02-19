@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1 v-if="winner.username">{{winner.username}}</h1>
-    <h1 v-if="winner.img && !winner.username">Tie</h1>
-    <h1>Room ID: {{roomID}}</h1>
-    <h3 v-if="!isStart&&countDown==0">Waiting for players...</h3>
+    <h1 v-if="winner.username" class="text-danger">Pemenangnya adalah: {{winner.username}}</h1>
+    <h1 v-if="winner.img && !winner.username" class="text-danger">Sayang sekali kalian seri</h1>
+    <h1 class="text-center" style="color: #fc8621">Room ID: {{roomID}}</h1>
+    <h3 v-if="!isStart&&countDown==0" class="text-center text-danger">Waiting for players...</h3>
     <div class="playersList">
       <player
         v-for="player in players"
@@ -25,15 +25,19 @@
       />
     </div>
 
-    <transition name="countDown" mode="out-in">
-      <h1 v-if="countDown>0" :key="countDown" id="countDown">{{countDown}}</h1>
-    </transition>
+    <div class="row justify-content-center text-warning">
+      <transition name="countDown" mode="out-in">
+        <h1 v-if="countDown>0" :key="countDown" id="countDown">{{countDown}}</h1>
+      </transition>
+    </div>
 
-    <button
-      v-show="(!isStart||winner!='')&&countDown==0"
-      v-on:click="backToHome"
-      class="btn bbtn"
-    >BACK</button>
+    <div class="row justify-content-center">
+      <button
+        v-show="(!isStart||winner!='')&&countDown==0"
+        v-on:click="backToHome"
+        class="col-3 btn btn-danger"
+      >Keluar</button>
+    </div>
   </div>
 </template>
 
@@ -91,28 +95,14 @@ export default {
   user-select: none;
 }
 
-.overlay-enter-active {
-  transition: all 0.3s ease-in-out;
-  transition-delay: 1s;
-}
-.overlay-enter {
-  opacity: 0;
-  position: absolute;
-  transform: scale(0);
-  transform: rotate(90deg);
-}
-
 .countDown-enter-active {
   transition: all 0.35s ease-in-out;
 }
+
 .countDown-enter {
   opacity: 0;
 }
-.bbtn {
-  width: 40%;
-  margin: 20px 10px;
-  padding: 0;
-}
+
 .playersList {
   display: flex;
   align-items: center;
@@ -120,18 +110,6 @@ export default {
   margin: auto;
   margin-bottom: 20px;
   height: 100px;
-}
-.overlay img {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-  opacity: 0.7;
-}
-.overlay {
-  position: relative;
-  top: -100%;
-  background-color: rgba(0, 0, 0, 0.2);
-  z-index: 1;
 }
 
 #board {
@@ -148,10 +126,6 @@ export default {
   border-width: 1px;
   border-color: black;
   overflow: hidden;
-}
-
-h1 {
-  margin: 10px 0;
 }
 
 @keyframes textAnimate {
