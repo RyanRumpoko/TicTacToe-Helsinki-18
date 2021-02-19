@@ -5,7 +5,6 @@
       v-show="imgLoaded"
       :src="player.img"
     />
-    <img v-if="!imgLoaded" src="loading.svg" style="border-color:red" />
 
     <p class="my-3 text-danger">{{player.username}}</p>
 
