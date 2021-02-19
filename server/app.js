@@ -13,19 +13,18 @@ const io = require('socket.io')(server, {
 const cors = require('cors');
 
 app.use(cors());
-const uuidv1 = require("uuid/v1");
+const uuid = require("uuid");
 const Game = require('./game');
 const port = process.env.PORT || 3000;
 
 let games = {};
 let playersCount = 0;
 
-io.on('connection', function(socket) {
+io.on('connection', (socket) => {
   playersCount++;
   io.emit('totalPlayers', playersCount);
   console.log(playersCount, '<<< di app.js');
   socket.on('joinGame', joinGame);
-  // socket.on('joinRoom', joinRoom);
   socket.on('leaveGame', leaveGame);
   socket.on('move', handleMove);
   socket.on('disconnect', leaveGame);
@@ -35,49 +34,21 @@ io.on('connection', function(socket) {
   })
 })
 
-function joinGame({
-  username,
-  img
-}) {
+function joinGame({ username, img }) {
+  if (!this.roomName) {
+    let roomID = uuid().substring(0, 7);
+    games[roomID] = new Game(roomID);
+    this.roomName = roomID;
+    games[roomID].addPlayer(this, username, img);
+  }
   for (index in games) {
-    var game = games[index];
+    let game = games[index];
     if (game.canJoin) {
       this.roomName = game.name;
       game.addPlayer(this, username, img);
     }
   }
-  if (!this.roomName) {
-    var roomID = uuidv1().substring(0, 7);
-    games[roomID] = new Game(roomID);
-    this.roomName = roomID;
-    games[roomID].addPlayer(this, username, img);
-  }
 }
-
-// function joinGame({
-//   username,
-//   img
-// }) {
-//   let roomID = uuidv1().substring(0, 7);
-//   games[roomID] = new Game(roomID);
-//   console.log(games[roomID], '<<< ini apps line 44')
-//   this.roomName = roomID;
-//   games[roomID].addPlayer(this, username, img);
-// }
-
-// function joinRoom ({
-//   username,
-//   img,
-//   roomID
-// }) {
-//   let game = games[roomID];
-//   console.log(game);
-//   if (game.canJoin) {
-//     this.roomName = game.name;
-//     console.log(game, '<<<<<< dalam if game join room');
-//     game.addPlayer(this, username, img);
-//   }
-// }
 
 function leaveGame() {
   if (this.roomName) {
@@ -93,10 +64,6 @@ function leaveGame() {
 function handleMove(cellID) {
   games[this.roomName].move(this.id, cellID)
 }
-
-// function onStart() {
-//   games[this.roomName].start()
-// }
 
 server.listen(port, () => {
   console.log('Server listening at port : ', port);

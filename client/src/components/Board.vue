@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 v-if="winner.username">{{winner.username}}</h1>
-    <h1 v-if="winner.img">Tie</h1>
+    <h1 v-if="winner.img && !winner.username">Tie</h1>
     <h1>Room ID: {{roomID}}</h1>
     <h3 v-if="!isStart&&countDown==0">Waiting for players...</h3>
     <div class="playersList">
@@ -18,7 +18,7 @@
         v-for="cell in cells"
         :key="cell.id"
         :img="cell.img"
-        v-on:change="move(cell.id)"
+        @change="move(cell.id)"
         :canClick="cell.canClick"
         :size="size"
         :id="cell.mark"
@@ -150,18 +150,10 @@ export default {
   overflow: hidden;
 }
 
-h3 {
-  overflow: hidden;
-  background: linear-gradient(90deg, #1a535c, #4ecdc4, #1a535c);
-  background-repeat: no-repeat;
-  background-size: 85%;
-  animation: textAnimate 2s linear infinite;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.2);
-}
 h1 {
   margin: 10px 0;
 }
+
 @keyframes textAnimate {
   0% {
     background-position: -500%;
