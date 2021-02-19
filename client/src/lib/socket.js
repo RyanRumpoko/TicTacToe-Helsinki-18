@@ -4,7 +4,7 @@ import store from '../store'
 
 const socket = new VueSocketIo({
   debug: true,
-  connection: 'http://localhost:3000',
+  connection: 'https://group-project-18-tic-tac-toe.herokuapp.com/',
   vuex: {
     store,
     actionPrefix: 'SOCKET_'
